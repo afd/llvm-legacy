@@ -54,7 +54,7 @@ struct AlignOf {
 ///  class besides some cosmetic cleanliness.  Example usage:
 ///  alignof<int>() returns the alignment of an int.
 template <typename T>
-static inline unsigned alignof() { return AlignOf<T>::Alignment; }
+static inline unsigned alignOf() { return AlignOf<T>::Alignment; }
 
 } // end namespace llvm
 #endif
