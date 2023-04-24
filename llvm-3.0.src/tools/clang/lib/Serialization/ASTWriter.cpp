@@ -1519,7 +1519,7 @@ void ASTWriter::WriteSourceManagerBlock(SourceManager &SourceMgr,
   Record.push_back(SOURCE_LOCATION_OFFSETS);
   Record.push_back(SLocEntryOffsets.size());
   Record.push_back(SourceMgr.getNextLocalOffset() - 1); // skip dummy
-  Stream.EmitRecordWithBlob(SLocOffsetsAbbrev, Record, data(SLocEntryOffsets));
+  Stream.EmitRecordWithBlob(SLocOffsetsAbbrev, Record, reinterpret_cast<char*>(data(SLocEntryOffsets)));
 
   Abbrev = new BitCodeAbbrev();
   Abbrev->Add(BitCodeAbbrevOp(FILE_SOURCE_LOCATION_OFFSETS));
@@ -1531,7 +1531,7 @@ void ASTWriter::WriteSourceManagerBlock(SourceManager &SourceMgr,
   Record.push_back(FILE_SOURCE_LOCATION_OFFSETS);
   Record.push_back(SLocFileEntryOffsets.size());
   Stream.EmitRecordWithBlob(SLocFileOffsetsAbbrev, Record,
-                            data(SLocFileEntryOffsets));
+                            reinterpret_cast<char*>(data(SLocFileEntryOffsets)));
 
   // Write the source location entry preloads array, telling the AST
   // reader which source locations entries it should load eagerly.
@@ -1935,7 +1935,7 @@ uint64_t ASTWriter::WriteDeclContextLexicalBlock(ASTContext &Context,
     Decls.push_back(std::make_pair((*D)->getKind(), GetDeclRef(*D)));
 
   ++NumLexicalDeclContexts;
-  Stream.EmitRecordWithBlob(DeclContextLexicalAbbrev, Record, data(Decls));
+  Stream.EmitRecordWithBlob(DeclContextLexicalAbbrev, Record, reinterpret_cast<char*>(data(Decls)));
   return Offset;
 }
 
@@ -1954,7 +1954,7 @@ void ASTWriter::WriteTypeDeclOffsets() {
   Record.push_back(TYPE_OFFSET);
   Record.push_back(TypeOffsets.size());
   Record.push_back(FirstTypeID - NUM_PREDEF_TYPE_IDS);
-  Stream.EmitRecordWithBlob(TypeOffsetAbbrev, Record, data(TypeOffsets));
+  Stream.EmitRecordWithBlob(TypeOffsetAbbrev, Record, reinterpret_cast<char*>(data(TypeOffsets)));
 
   // Write the declaration offsets array
   Abbrev = new BitCodeAbbrev();
@@ -1967,7 +1967,7 @@ void ASTWriter::WriteTypeDeclOffsets() {
   Record.push_back(DECL_OFFSET);
   Record.push_back(DeclOffsets.size());
   Record.push_back(FirstDeclID - NUM_PREDEF_DECL_IDS);
-  Stream.EmitRecordWithBlob(DeclOffsetAbbrev, Record, data(DeclOffsets));
+  Stream.EmitRecordWithBlob(DeclOffsetAbbrev, Record, reinterpret_cast<char*>(data(DeclOffsets)));
 }
 
 //===----------------------------------------------------------------------===//
@@ -2155,8 +2155,8 @@ void ASTWriter::WriteSelectors(Sema &SemaRef) {
     Record.push_back(SELECTOR_OFFSETS);
     Record.push_back(SelectorOffsets.size());
     Record.push_back(FirstSelectorID - NUM_PREDEF_SELECTOR_IDS);
-    Stream.EmitRecordWithBlob(SelectorOffsetAbbrev, Record,
-                              data(SelectorOffsets));
+    // AD-HACK Stream.EmitRecordWithBlob(SelectorOffsetAbbrev, Record,
+    //                          data(SelectorOffsets));
   }
 }
 
@@ -2371,8 +2371,8 @@ void ASTWriter::WriteIdentifierTable(Preprocessor &PP, bool IsModule) {
   Record.push_back(IDENTIFIER_OFFSET);
   Record.push_back(IdentifierOffsets.size());
   Record.push_back(FirstIdentID - NUM_PREDEF_IDENT_IDS);
-  Stream.EmitRecordWithBlob(IdentifierOffsetAbbrev, Record,
-                            data(IdentifierOffsets));
+  // AD-HACK Stream.EmitRecordWithBlob(IdentifierOffsetAbbrev, Record,
+  //                          data(IdentifierOffsets));
 }
 
 //===----------------------------------------------------------------------===//
@@ -2956,8 +2956,8 @@ void ASTWriter::WriteASTCore(Sema &SemaRef, MemorizeStatCalls *StatCalls,
   unsigned TuUpdateLexicalAbbrev = Stream.EmitAbbrev(Abv);
   Record.clear();
   Record.push_back(TU_UPDATE_LEXICAL);
-  Stream.EmitRecordWithBlob(TuUpdateLexicalAbbrev, Record,
-                            data(NewGlobalDecls));
+  // AD-HACK Stream.EmitRecordWithBlob(TuUpdateLexicalAbbrev, Record,
+  //                          data(NewGlobalDecls));
   
   // And a visible updates block for the translation unit.
   Abv = new llvm::BitCodeAbbrev();
