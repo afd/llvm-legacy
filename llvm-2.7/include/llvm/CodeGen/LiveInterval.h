@@ -373,7 +373,7 @@ namespace llvm {
                          bool isDefAccurate, BumpPtrAllocator &VNInfoAllocator){
       VNInfo *VNI =
         static_cast<VNInfo*>(VNInfoAllocator.Allocate((unsigned)sizeof(VNInfo),
-                                                      alignof<VNInfo>()));
+                                                      alignOf<VNInfo>()));
       new (VNI) VNInfo((unsigned)valnos.size(), def, CopyMI);
       VNI->setIsDefAccurate(isDefAccurate);
       valnos.push_back(VNI);
@@ -386,7 +386,7 @@ namespace llvm {
                             BumpPtrAllocator &VNInfoAllocator) {
       VNInfo *VNI =
         static_cast<VNInfo*>(VNInfoAllocator.Allocate((unsigned)sizeof(VNInfo),
-                                                      alignof<VNInfo>()));
+                                                      alignOf<VNInfo>()));
     
       new (VNI) VNInfo((unsigned)valnos.size(), *orig);
       valnos.push_back(VNI);

@@ -259,7 +259,7 @@ namespace {
     //
     static const AllocaInst *isDirectAlloca(const Value *V) {
       const AllocaInst *AI = dyn_cast<AllocaInst>(V);
-      if (!AI) return false;
+      if (!AI) return 0;
       if (AI->isArrayAllocation())
         return 0;   // FIXME: we can also inline fixed size array allocas!
       if (AI->getParent() != &AI->getParent()->getParent()->getEntryBlock())

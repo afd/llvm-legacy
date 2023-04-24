@@ -249,6 +249,8 @@ if( MSVC )
     add_llvm_definitions( /WX )
   endif (LLVM_ENABLE_WERROR)
 elseif( CMAKE_COMPILER_IS_GNUCXX )
+  # Disable this class of error to enable building with modern compilers.
+  add_llvm_definitions( -Wno-narrowing )
   if (LLVM_ENABLE_WARNINGS)
     add_llvm_definitions( -Wall -W -Wno-unused-parameter -Wwrite-strings )
     if (LLVM_ENABLE_PEDANTIC)

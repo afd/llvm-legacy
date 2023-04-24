@@ -679,7 +679,9 @@ inline CanQual<Type> CanQual<T>::getNonReferenceType() const {
 template<typename T>
 CanQual<T> CanQual<T>::getFromOpaquePtr(void *Ptr) {
   CanQual<T> Result;
-  Result.Stored.setFromOpaqueValue(Ptr);
+  // The following line has been replaced by a line from clang 2.8 to avoid a compilation error.
+  // Result.Stored.setFromOpaqueValue(Ptr);
+  Result.Stored = QualType::getFromOpaquePtr(Ptr);
   assert((!Result || Result.Stored.isCanonical())
          && "Type is not canonical!");
   return Result;
