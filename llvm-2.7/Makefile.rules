@@ -586,7 +586,7 @@ endif
 # that if LOADABLE_MODULE is specified then the resulting shared library can
 # be opened with dlopen.
 ifdef LOADABLE_MODULE
-  LD.Flags += -module
+  LD.Flags += -Mmodules
 endif
 
 ifdef SHARED_LIBRARY
@@ -639,7 +639,7 @@ endif
 ifndef NO_PEDANTIC
 CompileCommonOpts += -pedantic -Wno-long-long
 endif
-CompileCommonOpts += -Wall -W -Wno-unused-parameter -Wwrite-strings \
+CompileCommonOpts += -Wall -W -Wno-unused-parameter -Wwrite-strings -Wno-deprecated-copy -Wno-misleading-indentation \
                      $(EXTRA_OPTIONS)
 
 ifeq ($(HOST_OS),HP-UX)
