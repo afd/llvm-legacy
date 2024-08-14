@@ -22,8 +22,8 @@ else() # Default for all other unix like systems.
   set(SHLIBPATH_VAR "LD_LIBRARY_PATH")
 endif()
 
-include(FindPythonInterp)
-if(PYTHONINTERP_FOUND)
+include(FindPython2)
+if(Python2_Interpreter_FOUND)
   get_directory_property(DEFINITIONS COMPILE_DEFINITIONS)
   foreach(DEF ${DEFINITIONS})
     set(DEFS "${DEFS} -D${DEF}")
@@ -52,7 +52,7 @@ if(PYTHONINTERP_FOUND)
                 -e "s#\@LLVM_BINARY_DIR\@#${LLVM_BINARY_DIR}#"
                 -e "s#\@LLVM_TOOLS_DIR\@#${LLVM_TOOLS_BINARY_DIR}/${CMAKE_CFG_INTDIR}#"
                 -e "s#\@LLVMGCCDIR\@##"
-                -e "s#\@PYTHON_EXECUTABLE\@#${PYTHON_EXECUTABLE}#"
+                -e "s#\@PYTHON_EXECUTABLE\@#${Python2_EXECUTABLE}#"
                 ${CMAKE_CURRENT_SOURCE_DIR}/lit.site.cfg.in >
                 ${CMAKE_CURRENT_BINARY_DIR}/lit.site.cfg
     COMMAND sed -e "s#\@LLVM_SOURCE_DIR\@#${LLVM_MAIN_SRC_DIR}#"
@@ -64,7 +64,7 @@ if(PYTHONINTERP_FOUND)
                 -e "s#\@SHLIBPATH_VAR\@#${SHLIBPATH_VAR}#"
                 ${CMAKE_CURRENT_SOURCE_DIR}/Unit/lit.site.cfg.in >
                 ${CMAKE_CURRENT_BINARY_DIR}/Unit/lit.site.cfg
-    COMMAND ${PYTHON_EXECUTABLE}
+    COMMAND ${Python2_EXECUTABLE}
                 ${LLVM_SOURCE_DIR}/utils/lit/lit.py
                 --param llvm_site_config=${CMAKE_CURRENT_BINARY_DIR}/lit.site.cfg
                 --param llvm_unit_site_config=${CMAKE_CURRENT_BINARY_DIR}/Unit/lit.site.cfg
