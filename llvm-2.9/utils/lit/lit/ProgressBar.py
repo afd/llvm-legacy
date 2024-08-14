@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 
 # Source: http://code.activestate.com/recipes/475116/, with
 # modifications by Daniel Dunbar.

@@ -24,8 +24,8 @@ else() # Default for all other unix like systems.
   set(SHLIBPATH_VAR "LD_LIBRARY_PATH")
 endif()
 
-include(FindPythonInterp)
-if(PYTHONINTERP_FOUND)
+include(FindPython2)
+if(Python2_Interpreter_FOUND)
   set(LIT_ARGS "${LLVM_LIT_ARGS}")
   separate_arguments(LIT_ARGS)
 
@@ -59,7 +59,7 @@ if(PYTHONINTERP_FOUND)
   set(LLVM_BINARY_DIR ${LLVM_BINARY_DIR})
   set(LLVM_TOOLS_DIR "${LLVM_TOOLS_BINARY_DIR}/%(build_config)s")
   set(LLVMGCCDIR "")
-  set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE})
+  set(PYTHON_EXECUTABLE ${Python2_EXECUTABLE})
   set(ENABLE_SHARED ${LLVM_SHARED_LIBS_ENABLED})
   set(SHLIBPATH_VAR ${SHLIBPATH_VAR})
 
@@ -73,7 +73,7 @@ if(PYTHONINTERP_FOUND)
     @ONLY)
 
   add_custom_target(check
-    COMMAND ${PYTHON_EXECUTABLE}
+    COMMAND ${Python2_EXECUTABLE}
                 ${LLVM_SOURCE_DIR}/utils/lit/lit.py
                 --param llvm_site_config=${CMAKE_CURRENT_BINARY_DIR}/lit.site.cfg
                 --param llvm_unit_site_config=${CMAKE_CURRENT_BINARY_DIR}/Unit/lit.site.cfg
