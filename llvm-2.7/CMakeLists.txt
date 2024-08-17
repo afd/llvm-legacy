@@ -192,6 +192,9 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LLVM_BINARY_DIR}/lib )
 add_llvm_definitions( -D__STDC_LIMIT_MACROS )
 add_llvm_definitions( -D__STDC_CONSTANT_MACROS )
 
+# Disable this class of error to enable building with modern compilers.
+add_llvm_definitions( -Wno-narrowing )
+
 # MSVC has a gazillion warnings with this.
 if( MSVC )
   option(LLVM_ENABLE_WARNINGS "Enable compiler warnings." OFF)
@@ -249,8 +252,6 @@ if( MSVC )
     add_llvm_definitions( /WX )
   endif (LLVM_ENABLE_WERROR)
 elseif( CMAKE_COMPILER_IS_GNUCXX )
-  # Disable this class of error to enable building with modern compilers.
-  add_llvm_definitions( -Wno-narrowing )
   if (LLVM_ENABLE_WARNINGS)
     add_llvm_definitions( -Wall -W -Wno-unused-parameter -Wwrite-strings )
     if (LLVM_ENABLE_PEDANTIC)
