@@ -8,6 +8,10 @@ set(PACKAGE_VERSION 2.7svn)
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 set(PACKAGE_BUGREPORT "llvmbugs@cs.uiuc.edu")
 
+# -O3 leads to miscompilation error in modern compiler
+set(CMAKE_C_FLAGS_RELEASE "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
 if( CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR AND NOT MSVC_IDE )
   message(FATAL_ERROR "In-source builds are not allowed.
 CMake would overwrite the makefiles distributed with LLVM.
